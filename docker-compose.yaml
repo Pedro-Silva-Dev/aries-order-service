@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    restart: always
+    tty: true
+    environment:
+      RABBITMQ_DEFAULT_USER: aries
+      RABBITMQ_DEFAULT_PASS: ar1e5@8511
+    ports:
+      - 5672:5672
+      - 15672:15672
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq/
+
+  mysql:
+    container_name: aries_db_mysql
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: aries
+      MYSQL_ROOT_PASSWORD: root_119J6uMKlCD
+      MYSQL_PASSWORD: aries_6xz888!YfQ
+      MYSQL_USER: aries
+    ports:
+      - 3388:3306
+    expose:
+      - 3388
+    volumes:
+      - ./db:/var/lib/mysql
+
+networks:
+  aries-rabbitmq:
+    driver: bridge
+

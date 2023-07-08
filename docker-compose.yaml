@@ -16,8 +16,6 @@ services:
     expose:
       - 5672
       - 15672
-    volumes:
-      - ./rabbitmq:/var/lib/rabbitmq/
 
   mysql:
     container_name: aries_db_mysql
@@ -34,8 +32,6 @@ services:
       - 3388:3306
     expose:
       - 3388
-    volumes:
-      - ./db:/var/lib/mysql
 
 networks:
   aries-rabbitmq:

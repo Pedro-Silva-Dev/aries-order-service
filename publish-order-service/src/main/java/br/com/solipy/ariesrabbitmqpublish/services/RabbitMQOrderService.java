@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,13 +25,18 @@ public class RabbitMQOrderService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    public Map<String, Boolean> sendMessageOrderService(String routingKey, OrderService orderService) {
+        Map<String, Boolean> map = new HashMap<>();
+        if(orderService.getTotal() == null || orderService.getPaymentToken() == null) {
+            map.put("success", false);
+            return map;
+        }
 
-    public Map<String, Boolean> registerOrderService(String routingKey, @Valid OrderService orderService) {
         OrderServiceDto orderServiceDto = OrderServiceDto.builder()
                 .setTotal(orderService.getTotal())
                 .setPaymentToken(orderService.getPaymentToken())
                 .build();
-        Map<String, Boolean> map = new HashMap<>();
+
         try {
             rabbitTemplate.convertAndSend(exchange, routingKey, orderServiceDto);
             map.put("success", true);
@@ -40,6 +46,7 @@ public class RabbitMQOrderService {
         }
         return map;
     }
+
 
 
 }

@@ -27,7 +27,7 @@ public class OrderServiceService {
                 .build();
         try{
             OrderService orderServicePersisted = orderServiceRepository.save(orderService);
-            return rabbitMQOrderService.registerOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+            return rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
         }catch (Exception e) {
             Map<String, Boolean> map = new HashMap<>();
             map.put("success", false);

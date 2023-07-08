@@ -31,7 +31,7 @@ class OrderServiceServiceTest {
                 .build();
         Map<String, Boolean> result = orderServiceService.createOrderService(orderServiceRequest);
 
-        assertThat(result).isNotNull();    
+        assertThat(result).isNotNull();
         assertThat(result.get("success")).isTrue();
     }
 

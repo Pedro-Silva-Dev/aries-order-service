@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -24,7 +25,14 @@ public class OrderServiceService {
                 .setTotal(orderServiceRequest.total())
                 .setObservation(orderServiceRequest.observation())
                 .build();
-        OrderService orderServicePersisted = orderServiceRepository.save(orderService);
-        return rabbitMQOrderService.registerOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+        try{
+            OrderService orderServicePersisted = orderServiceRepository.save(orderService);
+            return rabbitMQOrderService.registerOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+        }catch (Exception e) {
+            Map<String, Boolean> map = new HashMap<>();
+            map.put("success", false);
+            return map;
+        }
+
     }
 }

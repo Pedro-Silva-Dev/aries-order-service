@@ -2,6 +2,7 @@ package br.com.solipy.ariesrabbitmqpublish.services;
 
 import br.com.solipy.ariesrabbitmqpublish.models.OrderService;
 import br.com.solipy.ariesrabbitmqpublish.models.dto.OrderServiceDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,7 +25,7 @@ public class RabbitMQOrderService {
     private RabbitTemplate rabbitTemplate;
 
 
-    public Map<String, Boolean> registerOrderService(String routingKey, OrderService orderService) {
+    public Map<String, Boolean> registerOrderService(String routingKey, @Valid OrderService orderService) {
         OrderServiceDto orderServiceDto = OrderServiceDto.builder()
                 .setTotal(orderService.getTotal())
                 .setPaymentToken(orderService.getPaymentToken())

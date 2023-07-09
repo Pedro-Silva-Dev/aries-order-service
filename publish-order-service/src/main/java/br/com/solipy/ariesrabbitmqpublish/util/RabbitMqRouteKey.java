@@ -1,5 +1,5 @@
 package br.com.solipy.ariesrabbitmqpublish.util;
 
-public enum RabbitMqRouteKey {
-    ORDER_SERVICE_KEY,
+public class RabbitMqRouteKey {
+    public static final String ORDER_SERVICE_KEY = "ORDER_SERVICE_KEY";
 }

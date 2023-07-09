@@ -16,7 +16,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue orderServiceQueue(){
-        return new Queue(RabbitMqQueue.ORDER_SERVICE.name(), true, false, false);
+        return new Queue(RabbitMqQueue.ORDER_SERVICE, true, false, false);
     }
 
     @Bean
@@ -29,7 +29,7 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(orderServiceQueue())
                 .to(directExchange())
-                .with(RabbitMqRouteKey.ORDER_SERVICE_KEY.name());
+                .with(RabbitMqRouteKey.ORDER_SERVICE_KEY);
     }
 
 

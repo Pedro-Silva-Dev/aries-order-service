@@ -2,6 +2,7 @@ package br.com.solipy.ariesrabbitmqpublish.services;
 
 import br.com.solipy.ariesrabbitmqpublish.models.OrderService;
 import br.com.solipy.ariesrabbitmqpublish.models.dto.OrderServiceDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,8 +23,8 @@ public class RabbitMQOrderService {
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
+    private final ObjectMapper objectMapper;
 
     public Map<String, Boolean> sendMessageOrderService(String routingKey, OrderService orderService) {
         Map<String, Boolean> map = new HashMap<>();
@@ -38,7 +39,8 @@ public class RabbitMQOrderService {
                 .build();
 
         try {
-            rabbitTemplate.convertAndSend(exchange, routingKey, orderServiceDto);
+            String message = this.objectMapper.writeValueAsString(orderServiceDto);
+            rabbitTemplate.convertAndSend(exchange, routingKey, message);
             map.put("success", true);
         }catch (Exception e) {
             map.put("success", false);

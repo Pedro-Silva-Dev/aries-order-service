@@ -32,7 +32,7 @@ class RabbitMQOrderServiceTest {
                 .setTotal(new BigDecimal(200))
                 .setPaymentToken(UUID.randomUUID().toString())
                 .build();
-        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderService);
+        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY, orderService);
 
         assertThat(result).isNotNull();
         assertThat(result.get("success")).isTrue();
@@ -49,7 +49,7 @@ class RabbitMQOrderServiceTest {
                 .setTotal(null)
                 .setPaymentToken(UUID.randomUUID().toString())
                 .build();
-        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderService);
+        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY, orderService);
 
         assertThat(result).isNotNull();
         assertThat(result.get("success")).isFalse();
@@ -66,7 +66,7 @@ class RabbitMQOrderServiceTest {
                 .setTotal(new BigDecimal(100))
                 .setPaymentToken(null)
                 .build();
-        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderService);
+        Map<String, Boolean> result = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY, orderService);
 
         assertThat(result).isNotNull();
         assertThat(result.get("success")).isFalse();

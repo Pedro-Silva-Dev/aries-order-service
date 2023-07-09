@@ -28,7 +28,7 @@ public class OrderServiceService {
                 .build();
         try{
             OrderService orderServicePersisted = orderServiceRepository.save(orderService);
-            Map<String, Boolean> map = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+            Map<String, Boolean> map = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY, orderServicePersisted);
             return OrderServiceResponse.builder()
                     .setSuccess(map.get("success"))
                     .build();

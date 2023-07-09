@@ -2,6 +2,7 @@ package br.com.solipy.ariesrabbitmqpublish.services;
 
 import br.com.solipy.ariesrabbitmqpublish.models.OrderService;
 import br.com.solipy.ariesrabbitmqpublish.models.requests.OrderServiceRequest;
+import br.com.solipy.ariesrabbitmqpublish.models.responses.OrderServiceResponse;
 import br.com.solipy.ariesrabbitmqpublish.repositories.OrderServiceRepository;
 import br.com.solipy.ariesrabbitmqpublish.util.RabbitMqRouteKey;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class OrderServiceService {
     private final OrderServiceRepository orderServiceRepository;
     private final RabbitMQOrderService rabbitMQOrderService;
 
-    public Map<String, Boolean> createOrderService(OrderServiceRequest orderServiceRequest) {
+    public OrderServiceResponse createOrderService(OrderServiceRequest orderServiceRequest) {
         OrderService orderService = OrderService.builder()
                 .setClient(orderServiceRequest.fullName())
                 .setWorkOrder(orderServiceRequest.workOrder())
@@ -27,11 +28,14 @@ public class OrderServiceService {
                 .build();
         try{
             OrderService orderServicePersisted = orderServiceRepository.save(orderService);
-            return rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+            Map<String, Boolean> map = rabbitMQOrderService.sendMessageOrderService(RabbitMqRouteKey.ORDER_SERVICE_KEY.name(), orderServicePersisted);
+            return OrderServiceResponse.builder()
+                    .setSuccess(map.get("success"))
+                    .build();
         }catch (Exception e) {
-            Map<String, Boolean> map = new HashMap<>();
-            map.put("success", false);
-            return map;
+            return OrderServiceResponse.builder()
+                    .setSuccess(false)
+                    .build();
         }
 
     }

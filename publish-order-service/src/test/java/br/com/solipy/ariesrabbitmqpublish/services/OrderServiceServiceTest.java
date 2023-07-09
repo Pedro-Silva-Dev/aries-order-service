@@ -1,6 +1,7 @@
 package br.com.solipy.ariesrabbitmqpublish.services;
 
 import br.com.solipy.ariesrabbitmqpublish.models.requests.OrderServiceRequest;
+import br.com.solipy.ariesrabbitmqpublish.models.responses.OrderServiceResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ class OrderServiceServiceTest {
                 .observation("Nenhuma observação")
                 .total(new BigDecimal(120))
                 .build();
-        Map<String, Boolean> result = orderServiceService.createOrderService(orderServiceRequest);
+        OrderServiceResponse result = orderServiceService.createOrderService(orderServiceRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.get("success")).isTrue();
+        assertThat(result.success()).isTrue();
     }
 
     @Test
@@ -44,10 +45,10 @@ class OrderServiceServiceTest {
                 .observation("Nenhuma observação")
                 .total(null)
                 .build();
-        Map<String, Boolean> result = orderServiceService.createOrderService(orderServiceRequest);
+        OrderServiceResponse result = orderServiceService.createOrderService(orderServiceRequest);
 
         assertThat(result).isNotNull();
-        assertThat(result.get("success")).isFalse();
+        assertThat(result.success()).isFalse();
     }
 
 }
